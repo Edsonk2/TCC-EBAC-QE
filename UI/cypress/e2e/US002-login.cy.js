@@ -1,53 +1,48 @@
+import LoginPage from "../pages/login.page";
+
 describe("US-0002 - Login na plataforma", () => {
+
   it("Deve realizar login com credenciais válidas", () => {
-    cy.visit("/minha-conta/");
+    LoginPage.visitar();
 
-    cy.get("#username").type("edsonk2@gmail.com");
-
-    cy.get("#password").type("teste@teste");
-
-    cy.get('[name="login"]').click();
+    LoginPage.preencherUsuario("edsonk2@gmail.com");
+    LoginPage.preencherSenha("teste@teste");
+    LoginPage.clicarLogin();
 
     cy.url().should("include", "/minha-conta/");
   });
 
   it("Não deve realizar login com senha inválida", () => {
-    cy.visit("/minha-conta/");
+    LoginPage.visitar();
 
-    cy.get("#username").type("edsonk2@gmail.com");
+    LoginPage.preencherUsuario("edsonk2@gmail.com");
+    LoginPage.preencherSenha("senha_incorreta");
+    LoginPage.clicarLogin();
 
-    cy.get("#password").type("senha_incorreta");
-
-    cy.get('[name="login"]').click();
-
-    cy.get(".woocommerce-error")
+    LoginPage.mensagemErro()
       .should("be.visible")
       .and("contain", "A senha fornecida para o e-mail");
   });
 
   it("Não deve realizar login sem informar a senha", () => {
-    cy.visit("/minha-conta/");
+    LoginPage.visitar();
 
-    cy.get("#username").type("edsonk2@gmail.com");
+    LoginPage.preencherUsuario("edsonk2@gmail.com");
+    LoginPage.clicarLogin();
 
-    cy.get('[name="login"]').click();
-
-    cy.get(".woocommerce-error").should("be.visible");
+    LoginPage.mensagemErro()
+      .should("be.visible");
   });
 
   it("Não deve realizar login sem informar o usuário", () => {
-  cy.visit("/minha-conta/");
+    LoginPage.visitar();
 
-  cy.get("#password")
-    .type("teste@teste");
+    LoginPage.preencherSenha("teste@teste");
+    LoginPage.clicarLogin();
 
-  cy.get('[name="login"]')
-    .click();
-
-  cy.get(".woocommerce-error")
-    .should("be.visible")
-    .and("contain", "Nome de usuário é obrigatório");
-});
-
+    LoginPage.mensagemErro()
+      .should("be.visible")
+      .and("contain", "Nome de usuário é obrigatório");
+  });
 
 });
