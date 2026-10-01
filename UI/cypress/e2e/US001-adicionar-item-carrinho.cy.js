@@ -1,7 +1,10 @@
-
 import ProductPage from "../pages/product.page";
 
 describe("US-0001 - Adicionar item ao carrinho", () => {
+  beforeEach(() => {
+    cy.clearCookies();
+    cy.clearLocalStorage();
+  });
 
   it("Deve adicionar o Aero Daily Fitness Tee tamanho M e cor Brown ao carrinho", () => {
     ProductPage.visitar();
@@ -17,9 +20,6 @@ describe("US-0001 - Adicionar item ao carrinho", () => {
   });
 
   it("Deve adicionar o Aero Daily Fitness Tee tamanho S e cor Black ao carrinho", () => {
-    cy.clearCookies();
-    cy.clearLocalStorage();
-
     ProductPage.visitar();
 
     ProductPage.selecionarTamanho("S");
@@ -42,8 +42,7 @@ describe("US-0001 - Adicionar item ao carrinho", () => {
 
     ProductPage.abrirCarrinho();
 
-    cy.contains("11 × Aero Daily Fitness Tee")
-      .should("not.exist");
+    cy.contains("11 × Aero Daily Fitness Tee").should("not.exist");
   });
 
   it("Deve aplicar 10% de desconto para compras entre R$200 e R$600", () => {
@@ -56,8 +55,7 @@ describe("US-0001 - Adicionar item ao carrinho", () => {
 
     ProductPage.abrirCarrinho();
 
-    ProductPage.totalCarrinho()
-      .should("contain", "R$194,40");
+    ProductPage.totalCarrinho().should("contain", "R$194,40");
   });
 
   it("Deve aplicar 15% de desconto para compras acima de R$600", () => {
@@ -70,9 +68,6 @@ describe("US-0001 - Adicionar item ao carrinho", () => {
 
     ProductPage.abrirCarrinho();
 
-    ProductPage.totalCarrinho()
-      .should("contain", "R$571,20");
+    ProductPage.totalCarrinho().should("contain", "R$571,20");
   });
-
 });
-
